@@ -119,32 +119,35 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
           
-      // Отрисовка черного прозрачного прямоугольника
-      this._ctx.fillStyle="rgba(0, 0, 0, 0.5)";
-          this._ctx.fillRect(
-          (-this._container.width / 2),
-          (-this._container.height / 2),
-          this._container.width,
-          this._container.height);
+		// Отрисовка рамки
+		this._ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+		this._ctx.beginPath();
 		
-      // Отрисовка текста	
-      this._ctx.textAlign = "center";
-      this._ctx.textBaseline = "bottom";
-      this._ctx.font="18px Georgia";
-      this._ctx.fillStyle = 'white';
-      this._ctx.fillText(
-        this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
-        0,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
-		  
-		  //Тут я безуспешно пытаюсь очистить центральную оласть от прямоугольника
-		  /*this._ctx.clearRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
-    */
-    
+		//внутренняя часть рамки
+		this._ctx.rect(
+			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
+			-this._resizeConstraint.side - this._ctx.lineWidth / 2);
+		
+		//внешняя часть рамки
+		this._ctx.rect(
+			this._container.width / 2,
+			-this._container.height / 2, 
+			-this._container.width, 
+			this._container.height);
+		
+		this._ctx.fill();
+		
+		// Отрисовка текста	
+		this._ctx.textAlign = "center";
+		this._ctx.textBaseline = "bottom";
+		this._ctx.font="18px Georgia";
+		this._ctx.fillStyle = 'white';
+		this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
+		0,
+		(-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
+		
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
