@@ -109,9 +109,9 @@
       // Отрисовка рамки - зигзага, обозначающего область изображения после
       // кадрирования.
       var ZigzagStep = 10;
-	this._ctx.lineWidth = 3;
+      this._ctx.lineWidth = 3;
     //движение вправо
-    var newPos = this.lineToZigzag(
+      var newPos = this.lineToZigzag(
       (-this._resizeConstraint.side / 2),
       (-this._resizeConstraint.side / 2),
       'right',
@@ -119,7 +119,7 @@
       ZigzagStep
     );
     //движение вниз
-    newPos = this.lineToZigzag(
+      newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'down',
@@ -127,7 +127,7 @@
       ZigzagStep
     );
     //движение влево
-    newPos = this.lineToZigzag(
+      newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'left',
@@ -135,7 +135,7 @@
       ZigzagStep
     );
     //движение вверх
-    newPos = this.lineToZigzag(
+      newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'up',
@@ -143,22 +143,22 @@
       ZigzagStep
     );
 		// Отрисовка затемненной области
-		this._ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-		this._ctx.beginPath();
+		  this._ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      this._ctx.beginPath();
 		//внутренняя часть
-		this._ctx.rect(
+		  this._ctx.rect(
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2);
 		//внешняя часть
-		this._ctx.rect(
+      this._ctx.rect(
 			this._container.width / 2,
-			-this._container.height / 2, 
-			-this._container.width, 
+			-this._container.height / 2,
+			-this._container.width,
 			this._container.height);
-		this._ctx.closePath();
-		this._ctx.fill();
+      this._ctx.closePath();
+      this._ctx.fill();
 		// Отрисовка текста	
 		this._ctx.textAlign = "center";
 		this._ctx.textBaseline = "bottom";
@@ -336,27 +336,27 @@
     },
 
 		//Функция отрисовки загзага. Входные параметры:
-		//Х и У координаты начальной позиции, 
+		//Х и У координаты начальной позиции,
 		//направление, длина линии, шаг зигзага.
 		//Возвращает координаты окончания зигзага.
 
     lineToZigzag: function (startX, startY, direction, length, step) {
-      var zigzag_x = startX;
-      var zigzag_y = startY;
-      this._ctx.moveTo(zigzag_x, zigzag_y);
+      var ZigzagX = startX;
+      var ZigzagY = startY;
+      this._ctx.moveTo(ZigzagX, ZigzagY);
       var zigzag_count = 0;
       var a, b, moveStep, startA;
       if ((direction === 'right') || (direction === 'left'))
       {
-        a = zigzag_x;
-        startA = zigzag_x;
-        b = zigzag_y;
+        a = ZigzagX;
+        startA = ZigzagX;
+        b = ZigzagY;
       }
       else
       {
-        a = zigzag_y;
-        startA = zigzag_y;
-        b = zigzag_x;
+        a = ZigzagY;
+        startA = ZigzagY;
+        b = ZigzagX;
       }
       if ((direction === 'right') || (direction === 'down'))
         moveStep = step;
@@ -385,21 +385,20 @@
         zigzag_count++;
         if ((direction === 'right') || (direction === 'left'))
         {
-          zigzag_x = a;
-          zigzag_y = b;
+          ZigzagX = a;
+          ZigzagY = b;
         }
         else
         {
-          zigzag_x = b;
-          zigzag_y = a;
+          ZigzagX = b;
+          ZigzagY = a;
         }
-        this._ctx.lineTo(zigzag_x, zigzag_y);
+        this._ctx.lineTo(ZigzagX, ZigzagY);
       }
 	  
 	  this._ctx.stroke();
-      return [zigzag_x, zigzag_y];
+      return [ZigzagX, ZigzagY];
     }
-    
   };
 
   /**
