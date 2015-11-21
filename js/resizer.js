@@ -143,10 +143,10 @@
       ZigzagStep
     );
 		// Отрисовка затемненной области
-		  this._ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
       this._ctx.beginPath();
 		//внутренняя часть
-		  this._ctx.rect(
+      this._ctx.rect(
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
@@ -159,14 +159,14 @@
 			this._container.height);
       this._ctx.closePath();
       this._ctx.fill();
-		// Отрисовка текста	
-		this._ctx.textAlign = "center";
-		this._ctx.textBaseline = "bottom";
-		this._ctx.font="18px Georgia";
-		this._ctx.fillStyle = 'white';
-		this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
-		0,
-		(-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
+		// Отрисовка текста
+      this._ctx.textAlign = 'center';
+      this._ctx.textBaseline = 'bottom';
+      this._ctx.font='18px Georgia';
+      this._ctx.fillStyle = 'white';
+      this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
+      0,
+      (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
@@ -340,7 +340,7 @@
 		//направление, длина линии, шаг зигзага.
 		//Возвращает координаты окончания зигзага.
 
-    lineToZigzag: function (startX, startY, direction, length, step) {
+    lineToZigzag: function(startX, startY, direction, length, step){
       var ZigzagX = startX;
       var ZigzagY = startY;
       this._ctx.moveTo(ZigzagX, ZigzagY);
@@ -395,8 +395,7 @@
         }
         this._ctx.lineTo(ZigzagX, ZigzagY);
       }
-	  
-	  this._ctx.stroke();
+      this._ctx.stroke();
       return [ZigzagX, ZigzagY];
     }
   };
