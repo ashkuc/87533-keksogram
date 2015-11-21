@@ -108,69 +108,57 @@
 
       // Отрисовка рамки - зигзага, обозначающего область изображения после
       // кадрирования.
-    var zikzag_step = 10;
-    
+      var ZigzagStep = 10;
 	this._ctx.lineWidth = 3;
-	
     //движение вправо
     var newPos = this.lineToZigzag(
       (-this._resizeConstraint.side / 2),
       (-this._resizeConstraint.side / 2),
       'right',
       this._resizeConstraint.side,
-      zikzag_step
+      ZigzagStep
     );
-    
     //движение вниз
     newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'down',
       this._resizeConstraint.side,
-      zikzag_step
+      ZigzagStep
     );
-    
     //движение влево
     newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'left',
       this._resizeConstraint.side,
-      zikzag_step
+      ZigzagStep
     );
-    
     //движение вверх
     newPos = this.lineToZigzag(
       newPos[0],
       newPos[1],
       'up',
       this._resizeConstraint.side,
-      zikzag_step
+      ZigzagStep
     );
-			  
 		// Отрисовка затемненной области
-		
 		this._ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-
 		this._ctx.beginPath();
-		
 		//внутренняя часть
 		this._ctx.rect(
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2);
-		
 		//внешняя часть
 		this._ctx.rect(
 			this._container.width / 2,
 			-this._container.height / 2, 
 			-this._container.width, 
 			this._container.height);
-			
 		this._ctx.closePath();
 		this._ctx.fill();
-		
 		// Отрисовка текста	
 		this._ctx.textAlign = "center";
 		this._ctx.textBaseline = "bottom";
@@ -179,7 +167,6 @@
 		this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
 		0,
 		(-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
-		
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
