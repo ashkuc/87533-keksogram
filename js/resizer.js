@@ -111,26 +111,87 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
+      // Отрисовка рамки - зигзага, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
-          
-		// Отрисовка рамки
+		this._ctx.beginPath();
+		
+		var zikzag_x = (-this._resizeConstraint.side / 2) ;
+		var zikzag_y = (-this._resizeConstraint.side / 2) ;
+		var zikzag_count = 0;
+		var zikzag_step = 6;
+		
+		this._ctx.moveTo(zikzag_x, zikzag_y);
+		//движение вправо
+		while( zikzag_x + zikzag_step < this._resizeConstraint.side / 2){
+			zikzag_x +=zikzag_step;
+			if (zikzag_count % 2 ==0)
+			{
+				zikzag_y +=zikzag_step;
+			}
+			else
+			{
+				zikzag_y -=zikzag_step;
+			}
+			zikzag_count++;
+			this._ctx.lineTo(zikzag_x, zikzag_y);
+		}
+		//движение вниз
+		while( zikzag_y + zikzag_step < this._resizeConstraint.side / 2){
+			zikzag_y +=zikzag_step;
+			if (zikzag_count % 2 ==0)
+			{
+				zikzag_x +=zikzag_step;
+			}
+			else
+			{
+				zikzag_x -=zikzag_step;
+			}
+			zikzag_count++;
+			this._ctx.lineTo(zikzag_x, zikzag_y);
+		}
+		//движение влево
+		while( zikzag_x - zikzag_step > -this._resizeConstraint.side / 2){
+			zikzag_x -=zikzag_step;
+			if (zikzag_count % 2 ==0)
+			{
+				zikzag_y +=zikzag_step;
+			}
+			else
+			{
+				zikzag_y -=zikzag_step;
+			}
+			zikzag_count++;
+			this._ctx.lineTo(zikzag_x, zikzag_y);
+		}
+		//движение вверх
+		while( zikzag_y - zikzag_step > -this._resizeConstraint.side / 2){
+			zikzag_y -=zikzag_step;
+			if (zikzag_count % 2 ==0)
+			{
+				zikzag_x +=zikzag_step;
+			}
+			else
+			{
+				zikzag_x -=zikzag_step;
+			}
+			zikzag_count++;
+			this._ctx.lineTo(zikzag_x, zikzag_y);
+		}
+		
+		  this._ctx.stroke();
+		  
+		// Отрисовка затемненной области
 		this._ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
 		this._ctx.beginPath();
 		
-		//внутренняя часть рамки
+		//внутренняя часть
 		this._ctx.rect(
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
 			-this._resizeConstraint.side - this._ctx.lineWidth / 2);
 		
-		//внешняя часть рамки
+		//внешняя часть
 		this._ctx.rect(
 			this._container.width / 2,
 			-this._container.height / 2, 
