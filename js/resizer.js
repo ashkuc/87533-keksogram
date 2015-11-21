@@ -107,76 +107,51 @@
       this._ctx.drawImage(this._image, displX, displY);
 
       // Отрисовка рамки - зигзага, обозначающего область изображения после
-      // кадрирования. Координаты задаются от центра.
-		this._ctx.beginPath();
-		
-		var zikzag_x = (-this._resizeConstraint.side / 2) ;
-		var zikzag_y = (-this._resizeConstraint.side / 2) ;
-		var zikzag_count = 0;
-		var zikzag_step = 6;
-		
-		this._ctx.moveTo(zikzag_x, zikzag_y);
-		//движение вправо
-		while( zikzag_x + zikzag_step < this._resizeConstraint.side / 2){
-			zikzag_x +=zikzag_step;
-			if (zikzag_count % 2 ==0)
-			{
-				zikzag_y +=zikzag_step;
-			}
-			else
-			{
-				zikzag_y -=zikzag_step;
-			}
-			zikzag_count++;
-			this._ctx.lineTo(zikzag_x, zikzag_y);
-		}
-		//движение вниз
-		while( zikzag_y + zikzag_step < this._resizeConstraint.side / 2){
-			zikzag_y +=zikzag_step;
-			if (zikzag_count % 2 ==0)
-			{
-				zikzag_x +=zikzag_step;
-			}
-			else
-			{
-				zikzag_x -=zikzag_step;
-			}
-			zikzag_count++;
-			this._ctx.lineTo(zikzag_x, zikzag_y);
-		}
-		//движение влево
-		while( zikzag_x - zikzag_step > -this._resizeConstraint.side / 2){
-			zikzag_x -=zikzag_step;
-			if (zikzag_count % 2 ==0)
-			{
-				zikzag_y +=zikzag_step;
-			}
-			else
-			{
-				zikzag_y -=zikzag_step;
-			}
-			zikzag_count++;
-			this._ctx.lineTo(zikzag_x, zikzag_y);
-		}
-		//движение вверх
-		while( zikzag_y - zikzag_step > -this._resizeConstraint.side / 2){
-			zikzag_y -=zikzag_step;
-			if (zikzag_count % 2 ==0)
-			{
-				zikzag_x +=zikzag_step;
-			}
-			else
-			{
-				zikzag_x -=zikzag_step;
-			}
-			zikzag_count++;
-			this._ctx.lineTo(zikzag_x, zikzag_y);
-		}
-		
-		  this._ctx.stroke();
-		  
+      // кадрирования.
+    var zikzag_step = 10;
+    
+	this._ctx.lineWidth = 3;
+	
+    //движение вправо
+    var newPos = this.lineToZigzag(
+      (-this._resizeConstraint.side / 2),
+      (-this._resizeConstraint.side / 2),
+      'right',
+      this._resizeConstraint.side,
+      zikzag_step
+    );
+    
+    //движение вниз
+    newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'down',
+      this._resizeConstraint.side,
+      zikzag_step
+    );
+    
+    //движение влево
+    newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'left',
+      this._resizeConstraint.side,
+      zikzag_step
+    );
+    
+    //движение вверх
+    newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'up',
+      this._resizeConstraint.side,
+      zikzag_step
+    );
+			  
 		// Отрисовка затемненной области
+		
 		this._ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+
 		this._ctx.beginPath();
 		
 		//внутренняя часть
@@ -192,7 +167,8 @@
 			-this._container.height / 2, 
 			-this._container.width, 
 			this._container.height);
-		
+			
+		this._ctx.closePath();
 		this._ctx.fill();
 		
 		// Отрисовка текста	
@@ -370,7 +346,73 @@
       imageToExport.src = temporaryCanvas.toDataURL('image/png');
 
       return imageToExport;
+    },
+
+		//Функция отрисовки загзага. Входные параметры:
+		//Х и У координаты начальной позиции, 
+		//направление, длина линии, шаг зигзага.
+		//Возвращает координаты окончания зигзага.
+
+    lineToZigzag: function (startX, startY, direction, length, step) {
+      var zigzag_x = startX;
+      var zigzag_y = startY;
+      this._ctx.moveTo(zigzag_x, zigzag_y);
+      var zigzag_count = 0;
+      var a, b, moveStep, startA;
+      if ((direction === 'right') || (direction === 'left'))
+      {
+        a = zigzag_x;
+        startA = zigzag_x;
+        b = zigzag_y;
+      }
+      else
+      {
+        a = zigzag_y;
+        startA = zigzag_y;
+        b = zigzag_x;
+      }
+      if ((direction === 'right') || (direction === 'down'))
+        moveStep = step;
+      else
+        moveStep = -step;
+      while (true){
+        if ((direction === 'right') || (direction === 'down'))
+        {
+          if (a + moveStep > startA + length)
+            break;
+        }
+        else
+        {
+          if (a + moveStep < startA - length)
+            break;
+        }
+        a += moveStep;
+        if (zigzag_count % 2 ==0)
+        {
+          b -= step;
+        }
+        else
+        {
+          b += step;
+        }
+        zigzag_count++;
+        if ((direction === 'right') || (direction === 'left'))
+        {
+          zigzag_x = a;
+          zigzag_y = b;
+        }
+        else
+        {
+          zigzag_x = b;
+          zigzag_y = a;
+        }
+        this._ctx.lineTo(zigzag_x, zigzag_y);
+      }
+	  
+	  this._ctx.stroke();
+      return [zigzag_x, zigzag_y];
     }
+    
   };
 
   /**
