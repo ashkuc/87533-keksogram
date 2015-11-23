@@ -360,7 +360,7 @@
       } else {
         moveStep = -step;
       }
-      for (;;){
+      for (;;) {
         if ((direction === 'right') || (direction === 'down')) {
           if (a + moveStep > startA + length) {
             break;
@@ -373,16 +373,14 @@
         a += moveStep;
         if (ZigzagCount % 2 === 0) {
           b -= step;
-        }
-        else {
+        } else {
           b += step;
         }
         ZigzagCount++;
         if ((direction === 'right') || (direction === 'left')) {
           ZigzagX = a;
           ZigzagY = b;
-        }
-        else {
+        } else {
           ZigzagX = b;
           ZigzagY = a;
         }
