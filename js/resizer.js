@@ -162,7 +162,7 @@
 		// Отрисовка текста
       this._ctx.textAlign = 'center';
       this._ctx.textBaseline = 'bottom';
-      this._ctx.font='18px Georgia';
+      this._ctx.font = '18px Georgia';
       this._ctx.fillStyle = 'white';
       this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
       0,
@@ -340,56 +340,50 @@
 		//направление, длина линии, шаг зигзага.
 		//Возвращает координаты окончания зигзага.
 
-    lineToZigzag: function(startX, startY, direction, length, step){
+    lineToZigzag: function(startX, startY, direction, length, step) {
       var ZigzagX = startX;
       var ZigzagY = startY;
       this._ctx.moveTo(ZigzagX, ZigzagY);
-      var zigzag_count = 0;
+      var ZigzagCount = 0;
       var a, b, moveStep, startA;
-      if ((direction === 'right') || (direction === 'left'))
-      {
+      if ((direction === 'right') || (direction === 'left')) {
         a = ZigzagX;
         startA = ZigzagX;
         b = ZigzagY;
       }
-      else
-      {
+      else {
         a = ZigzagY;
         startA = ZigzagY;
         b = ZigzagX;
       }
-      if ((direction === 'right') || (direction === 'down'))
+      if ((direction === 'right') || (direction === 'down')) {
         moveStep = step;
-      else
+      } else {
         moveStep = -step;
+      }
       while (true){
-        if ((direction === 'right') || (direction === 'down'))
-        {
-          if (a + moveStep > startA + length)
+        if ((direction === 'right') || (direction === 'down')) {
+          if (a + moveStep > startA + length) {
             break;
+          }
         }
-        else
-        {
+        else{
           if (a + moveStep < startA - length)
             break;
         }
         a += moveStep;
-        if (zigzag_count % 2 ==0)
-        {
+        if (ZigzagCount % 2 ==0) {
           b -= step;
         }
-        else
-        {
+        else {
           b += step;
         }
-        zigzag_count++;
-        if ((direction === 'right') || (direction === 'left'))
-        {
+        ZigzagCount++;
+        if ((direction === 'right') || (direction === 'left')) {
           ZigzagX = a;
           ZigzagY = b;
         }
-        else
-        {
+        else {
           ZigzagX = b;
           ZigzagY = a;
         }
