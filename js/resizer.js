@@ -350,8 +350,7 @@
         a = ZigzagX;
         startA = ZigzagX;
         b = ZigzagY;
-      }
-      else {
+      } else {
         a = ZigzagY;
         startA = ZigzagY;
         b = ZigzagX;
@@ -361,18 +360,18 @@
       } else {
         moveStep = -step;
       }
-      while (true){
+      for (;;){
         if ((direction === 'right') || (direction === 'down')) {
           if (a + moveStep > startA + length) {
             break;
           }
-        }
-        else{
-          if (a + moveStep < startA - length)
+        } else {
+          if (a + moveStep < startA - length) {
             break;
+          }
         }
         a += moveStep;
-        if (ZigzagCount % 2 ==0) {
+        if (ZigzagCount % 2 === 0) {
           b -= step;
         }
         else {
