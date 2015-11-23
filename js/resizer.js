@@ -339,10 +339,10 @@
 		//Х и У координаты начальной позиции,
 		//направление, длина линии, шаг зигзага.
 		//Возвращает координаты окончания зигзага.
-
     lineToZigzag: function(startX, startY, direction, length, step) {
       var ZigzagX = startX;
       var ZigzagY = startY;
+      this._ctx.beginPath();
       this._ctx.moveTo(ZigzagX, ZigzagY);
       var ZigzagCount = 0;
       var a, b, moveStep, startA;
@@ -390,6 +390,7 @@
         this._ctx.lineTo(ZigzagX, ZigzagY);
       }
       this._ctx.stroke();
+      this._ctx.closePath();
       return [ZigzagX, ZigzagY];
     }
   };
