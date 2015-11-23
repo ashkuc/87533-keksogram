@@ -91,11 +91,6 @@
       this._ctx.lineWidth = 6;
       // Цвет обводки.
       this._ctx.strokeStyle = '#ffe753';
-      // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // расстояние между соседними штрихами.
-      this._ctx.setLineDash([15, 10]);
-      // Смещение первого штриха от начала линии.
-      this._ctx.lineDashOffset = 7;
 
       // Сохранение состояния канваса.
       // Подробней см. строку 132.
@@ -111,14 +106,67 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
-      // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
-
+      // Отрисовка рамки - зигзага, обозначающего область изображения после
+      // кадрирования.
+      var ZigzagStep = 10;
+      this._ctx.lineWidth = 3;
+    //движение вправо
+      var newPos = this.lineToZigzag(
+      (-this._resizeConstraint.side / 2),
+      (-this._resizeConstraint.side / 2),
+      'right',
+      this._resizeConstraint.side,
+      ZigzagStep
+    );
+    //движение вниз
+      newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'down',
+      this._resizeConstraint.side,
+      ZigzagStep
+    );
+    //движение влево
+      newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'left',
+      this._resizeConstraint.side,
+      ZigzagStep
+    );
+    //движение вверх
+      newPos = this.lineToZigzag(
+      newPos[0],
+      newPos[1],
+      'up',
+      this._resizeConstraint.side,
+      ZigzagStep
+    );
+		// Отрисовка затемненной области
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      this._ctx.beginPath();
+		//внутренняя часть
+      this._ctx.rect(
+			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+			this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+			-this._resizeConstraint.side - this._ctx.lineWidth / 2,
+			-this._resizeConstraint.side - this._ctx.lineWidth / 2);
+		//внешняя часть
+      this._ctx.rect(
+			this._container.width / 2,
+			-this._container.height / 2,
+			-this._container.width,
+			this._container.height);
+      this._ctx.closePath();
+      this._ctx.fill();
+		// Отрисовка текста
+      this._ctx.textAlign = 'center';
+      this._ctx.textBaseline = 'bottom';
+      this._ctx.font = '18px Georgia';
+      this._ctx.fillStyle = 'white';
+      this._ctx.fillText(this._image.naturalWidth + ' \u00D7 ' + this._image.naturalHeight,
+      0,
+      (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 2);
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
@@ -285,6 +333,62 @@
       imageToExport.src = temporaryCanvas.toDataURL('image/png');
 
       return imageToExport;
+    },
+
+		//Функция отрисовки загзага. Входные параметры:
+		//Х и У координаты начальной позиции,
+		//направление, длина линии, шаг зигзага.
+		//Возвращает координаты окончания зигзага.
+    lineToZigzag: function(startX, startY, direction, length, step) {
+      var ZigzagX = startX;
+      var ZigzagY = startY;
+      this._ctx.beginPath();
+      this._ctx.moveTo(ZigzagX, ZigzagY);
+      var ZigzagCount = 0;
+      var a, b, moveStep, startA;
+      if ((direction === 'right') || (direction === 'left')) {
+        a = ZigzagX;
+        startA = ZigzagX;
+        b = ZigzagY;
+      } else {
+        a = ZigzagY;
+        startA = ZigzagY;
+        b = ZigzagX;
+      }
+      if ((direction === 'right') || (direction === 'down')) {
+        moveStep = step;
+      } else {
+        moveStep = -step;
+      }
+      for (;;) {
+        if ((direction === 'right') || (direction === 'down')) {
+          if (a + moveStep > startA + length) {
+            break;
+          }
+        } else {
+          if (a + moveStep < startA - length) {
+            break;
+          }
+        }
+        a += moveStep;
+        if (ZigzagCount % 2 === 0) {
+          b -= step;
+        } else {
+          b += step;
+        }
+        ZigzagCount++;
+        if ((direction === 'right') || (direction === 'left')) {
+          ZigzagX = a;
+          ZigzagY = b;
+        } else {
+          ZigzagX = b;
+          ZigzagY = a;
+        }
+        this._ctx.lineTo(ZigzagX, ZigzagY);
+      }
+      this._ctx.stroke();
+      this._ctx.closePath();
+      return [ZigzagX, ZigzagY];
     }
   };
 
