@@ -72,8 +72,26 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    var widthPass = (resizeXField.value + resizeSideField.value) <= currentResizer._image.naturalWidth;
+    var heightPass = (resizeYField.value + resizeSideField.value) <= currentResizer._image.naturalHeight;
+    if (widthPass && heightPass) {
+      return true;
+    } else {
+      if (!widthPass) {
+        alert('widthPass is not valid');
+      }
+      if (!heightPass) {
+        alert('heightPass is not valid');
+      }
+      return false;
+    }
   }
+
+  var resizeXField = document.getElementById('resize-x');
+
+  var resizeYField = document.getElementById('resize-y');
+
+  var resizeSideField = document.getElementById('resize-size');  
 
   /**
    * Форма загрузки изображения.
@@ -199,6 +217,8 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+    } else {
+      alert('resize Form Is Not Valid');
     }
   };
 
