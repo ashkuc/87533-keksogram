@@ -80,9 +80,8 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    resizeXField.max =  currentResizer._image.naturalWidth - resizeSideField.value;
-  
-    resizeYField.max =  currentResizer._image.naturalHeight - resizeSideField.value;
+    resizeXField.max = currentResizer._image.naturalWidth - resizeSideField.value;
+    resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
 
     var widthPass = (resizeXField.value + resizeSideField.value) <= currentResizer._image.naturalWidth;
     var heightPass = (resizeYField.value + resizeSideField.value) <= currentResizer._image.naturalHeight;
@@ -96,15 +95,15 @@
     }
   }
 
-  resizeXField.addEventListener('keyup',function () {
+  resizeXField.addEventListener('keyup', function() {
     resizeFormIsValid();
   });
 
-  resizeYField.addEventListener('keyup',function () {
+  resizeYField.addEventListener('keyup', function() {
     resizeFormIsValid();
   });
 
-  resizeSideField.addEventListener('keyup',function () {
+  resizeSideField.addEventListener('keyup', function() {
     resizeFormIsValid();
   });
 
@@ -232,8 +231,6 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
-    } else {
-      alert('resize Form Is Not Valid');
     }
   };
 
