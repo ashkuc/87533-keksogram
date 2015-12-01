@@ -103,6 +103,13 @@
    */
   var uploadMessage = document.querySelector('.upload-message');
 
+  function daysAfterBirth(birthDate) {
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var today = Date.now();
+    var diffInDays = Math.round(Math.abs((today - birthDate.getTime())/(oneDay)));
+    return diffInDays;
+  }
+
   /**
    * @param {Action} action
    * @param {string=} message
@@ -197,6 +204,8 @@
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
 
+      filterImage.className = 'filter-image-preview ' + (docCookies.getItem("filter-cookie") ? docCookies.getItem("filter-cookie") : 'filter-none');
+
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
@@ -247,7 +256,8 @@
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
-
+    
+    docCookies.setItem("filter-cookie", filterMap[selectedFilter], 864e5 * daysAfterBirth(new Date(2015,8,9)), "/");
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
