@@ -80,12 +80,12 @@
    * @return {boolean}
    */
   function renewResizeFormLimits() {
-    if (typeof currentResizer != 'undefined') {
+    if (typeof currentResizer !== 'undefined') {
       resizeXField.max = currentResizer._image.naturalWidth - resizeSideField.value;
       resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
       resizeSideField.max = Math.min(currentResizer._image.naturalWidth, currentResizer._image.naturalHeight);
       resizeFormIsValid();
-      return(this);
+      return this;
     }
   }
 
