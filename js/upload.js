@@ -85,7 +85,7 @@
       resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
       resizeSideField.max = Math.min(currentResizer._image.naturalWidth, currentResizer._image.naturalHeight);
       resizeFormIsValid();
-      return this;
+      return this.id;
     }
   }
 
