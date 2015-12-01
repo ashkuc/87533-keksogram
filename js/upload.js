@@ -79,14 +79,18 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
+  function renewResizeFormLimits() {
+    if (typeof currentResizer != 'undefined') {
+      resizeXField.max = currentResizer._image.naturalWidth - resizeSideField.value;
+      resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
+      resizeSideField.max = Math.min(currentResizer._image.naturalWidth, currentResizer._image.naturalHeight);
+      resizeFormIsValid();
+      return(this);
+    }
+  }
+
   function resizeFormIsValid() {
-    resizeXField.max = currentResizer._image.naturalWidth - resizeSideField.value;
-    resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
-
-    var widthPass = (resizeXField.value + resizeSideField.value) <= currentResizer._image.naturalWidth;
-    var heightPass = (resizeYField.value + resizeSideField.value) <= currentResizer._image.naturalHeight;
-
-    if (widthPass && heightPass) {
+    if (resizeXField.validity.valid && resizeYField.validity.valid && resizeSideField.validity.valid) {
       resizeSubmitButton.disabled = false;
       return true;
     } else {
@@ -95,17 +99,11 @@
     }
   }
 
-  resizeXField.addEventListener('keyup', function() {
-    resizeFormIsValid();
-  });
+  resizeXField.addEventListener('keyup', renewResizeFormLimits);
 
-  resizeYField.addEventListener('keyup', function() {
-    resizeFormIsValid();
-  });
+  resizeYField.addEventListener('keyup', renewResizeFormLimits);
 
-  resizeSideField.addEventListener('keyup', function() {
-    resizeFormIsValid();
-  });
+  resizeSideField.addEventListener('keyup', renewResizeFormLimits);
 
   /**
    * Форма загрузки изображения.
