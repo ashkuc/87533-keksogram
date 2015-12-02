@@ -218,6 +218,10 @@ body {
   width: 3em;
 }
 
+.upload-resize-controls input:invalid{
+  background-color: red;
+}
+
 .upload-filter-controls {
   border: 0;
   bottom: 10px;
