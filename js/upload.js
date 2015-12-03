@@ -209,7 +209,9 @@
 
       filterCookie = docCookies.getItem("filter-cookie");
       filterCookie = filterCookie || 'none';
-      filterImage.className = 'filter-image-preview ' + filterCookie;
+      filterImage.className = 'filter-image-preview filter-' + filterCookie;
+
+      document.getElementById('upload-filter-'+filterCookie).checked = true;
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
