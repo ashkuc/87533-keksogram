@@ -35,6 +35,7 @@
    */
   var filterMap;
 
+  var filterCookie;
   /**
    * Объект, который занимается кадрированием изображения.
    * @type {Resizer}
@@ -97,6 +98,8 @@
    * @type {HTMLImageElement}
    */
   var filterImage = filterForm.querySelector('.filter-image-preview');
+
+  var selectedFilter;
 
   /**
    * @type {HTMLElement}
@@ -204,7 +207,9 @@
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
 
-      filterImage.className = 'filter-image-preview ' + (docCookies.getItem("filter-cookie") ? docCookies.getItem("filter-cookie") : 'filter-none');
+      filterCookie = docCookies.getItem("filter-cookie");
+      filterCookie = filterCookie || 'none';
+      filterImage.className = 'filter-image-preview ' + filterCookie;
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
@@ -230,6 +235,9 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    selectedFilter = selectedFilter || filterCookie;
+
+    docCookies.setItem("filter-cookie", selectedFilter, 24 * 60 * 60 * 1000 * daysAfterBirth(new Date(2015,8,9)), "/");
     cleanupResizer();
     updateBackground();
 
@@ -253,11 +261,10 @@
       };
     }
 
-    var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
+    selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
     
-    docCookies.setItem("filter-cookie", filterMap[selectedFilter], 864e5 * daysAfterBirth(new Date(2015,8,9)), "/");
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
