@@ -67,13 +67,43 @@
     backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
   }
 
+  var resizeXField = document.getElementById('resize-x');
+
+  var resizeYField = document.getElementById('resize-y');
+
+  var resizeSideField = document.getElementById('resize-size');
+
+  var resizeSubmitButton = document.getElementById('resize-fwd');
+
   /**
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  function resizeFormIsValid() {
-    return true;
+  function renewResizeFormLimits() {
+    if (typeof currentResizer !== 'undefined') {
+      resizeXField.max = currentResizer._image.naturalWidth - resizeSideField.value;
+      resizeYField.max = currentResizer._image.naturalHeight - resizeSideField.value;
+      resizeSideField.max = Math.min(currentResizer._image.naturalWidth, currentResizer._image.naturalHeight);
+      resizeFormIsValid();
+      return this.id;
+    }
   }
+
+  function resizeFormIsValid() {
+    if (resizeXField.validity.valid && resizeYField.validity.valid && resizeSideField.validity.valid) {
+      resizeSubmitButton.disabled = false;
+      return true;
+    } else {
+      resizeSubmitButton.disabled = true;
+      return false;
+    }
+  }
+
+  resizeXField.addEventListener('keyup', renewResizeFormLimits);
+
+  resizeYField.addEventListener('keyup', renewResizeFormLimits);
+
+  resizeSideField.addEventListener('keyup', renewResizeFormLimits);
 
   /**
    * Форма загрузки изображения.
