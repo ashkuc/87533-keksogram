@@ -137,9 +137,9 @@
   var uploadMessage = document.querySelector('.upload-message');
 
   function daysAfterBirth(birthDate) {
-    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     var today = Date.now();
-    var diffInDays = Math.round(Math.abs((today - birthDate.getTime())/(oneDay)));
+    var diffInDays = Math.round(Math.abs((today - birthDate.getTime()) / (oneDay)));
     return diffInDays;
   }
 
@@ -237,11 +237,11 @@
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
 
-      filterCookie = docCookies.getItem("filter-cookie");
+      filterCookie = docCookies.getItem('filter-cookie');
       filterCookie = filterCookie || 'none';
       filterImage.className = 'filter-image-preview filter-' + filterCookie;
 
-      document.getElementById('upload-filter-'+filterCookie).checked = true;
+      document.getElementById('upload-filter-' + filterCookie).checked = true;
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
@@ -269,7 +269,7 @@
 
     selectedFilter = selectedFilter || filterCookie;
 
-    docCookies.setItem("filter-cookie", selectedFilter, 24 * 60 * 60 * 1000 * daysAfterBirth(new Date(2015,8,9)), "/");
+    docCookies.setItem('filter-cookie', selectedFilter, 24 * 60 * 60 * 1000 * daysAfterBirth(new Date(2015, 8, 9)), '/');
     cleanupResizer();
     updateBackground();
 
@@ -296,7 +296,6 @@
     selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
-    
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
