@@ -1,8 +1,10 @@
+/* globals pictures */
 'use strict';
+
+var templateNode = document.querySelector('#picture-template');
 
 (function() {
   var divPictures = document.querySelector('.pictures');
-  var templateNode = document.querySelector('#picture-template');
 
   //Создание нового экземпляра по шаблону
   var newPictureTemplate = function(item) {
