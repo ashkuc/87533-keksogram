@@ -10,24 +10,24 @@
     var image = new Image();
 
     image.onload = function() {
-        image.height = image.width = 182;
-        newTemplate.replaceChild(image, newTemplate.querySelector('img'));
+      image.height = image.width = 182;
+      newTemplate.replaceChild(image, newTemplate.querySelector('img'));
     };
-  
+
     image.onerror = function() {
-        newTemplate.classList.add('picture-load-failure');
+      newTemplate.classList.add('picture-load-failure');
     };
-  
+
     image.src = item.url;
-  
+
     newTemplate.querySelector('.picture-comments').textContent = item.comments;
     newTemplate.querySelector('.picture-likes').textContent = item.likes;
-  
+
     return newTemplate;
-  }
-  
-  pictures.forEach( function(item){
+  };
+
+  pictures.forEach( function(item) {
     var pictureTemp = newPictureTemplate(item);
-  divPictures.appendChild(pictureTemp);
+    divPictures.appendChild(pictureTemp);
   });
 })();
