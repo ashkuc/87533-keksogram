@@ -12,16 +12,16 @@ var templateNode = document.querySelector('#picture-template');
   var picturesArray = [];
 
   var activefilter = 'filter-popular';
-  
+
   for (var i = 0; i < filtersRadio.length; i++) {
     filtersRadio[i].onclick = function(event) {
       var clickedElementID = event.target.id;
       changeFilter(clickedElementID);
-    }
-  };
+    };
+  }
 
   var changeFilter = function(id) {
-    if (activefilter === id){
+    if (activefilter === id) {
       return;
     }
     activefilter = id;
@@ -47,12 +47,12 @@ var templateNode = document.querySelector('#picture-template');
 
   };
 
-  var hideFilters = function(){
+  var hideFilters = function() {
     divFilters.classList.remove('visible');
     divFilters.classList.add('hidden');
   };
 
-  var showFilters = function(){
+  var showFilters = function() {
     divFilters.classList.remove('hidden');
     divFilters.classList.add('visible');
   };
@@ -99,10 +99,10 @@ var templateNode = document.querySelector('#picture-template');
     xhr.send();
 
     xhr.onreadystatechange = function() {
-      if (xhr.readyState != 4) {
+      if (xhr.readyState !== 4) {
         return;
       }
-      if (xhr.status != 200){
+      if (xhr.status !== 200) {
         divPictures.classList.remove('pictures-loading');
         divPictures.classList.add('pictures-failure');
       } else {
@@ -111,8 +111,8 @@ var templateNode = document.querySelector('#picture-template');
         picturesArray = pictures;
         showPictures(pictures);
       }
-    }
-    divPictures.classList.add('pictures-loading');  
+    };
+    divPictures.classList.add('pictures-loading');
   };
 
   hideFilters();
