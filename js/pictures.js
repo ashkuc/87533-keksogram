@@ -13,6 +13,8 @@ var templateNode = document.querySelector('#picture-template');
 
   var activefilter = 'filter-popular';
 
+  var monthInMilSec = 1000 * 60 * 60 * 24 * 60;
+
   for (var i = 0; i < filtersRadio.length; i++) {
     filtersRadio[i].onclick = function(event) {
       var clickedElementID = event.target.id;
@@ -25,26 +27,31 @@ var templateNode = document.querySelector('#picture-template');
       return;
     }
     activefilter = id;
+    var filteredPictures;
     switch (id) {
       case 'filter-popular':
-        picturesArray = picturesArray.sort(function(pic1, pic2) {
+        filteredPictures = picturesArray.sort(function(pic1, pic2) {
           return pic2.likes - pic1.likes;
         });
         break;
+
       case 'filter-discussed':
-        picturesArray = picturesArray.sort(function(pic1, pic2) {
+        filteredPictures = picturesArray.sort(function(pic1, pic2) {
           return pic2.comments - pic1.comments;
         });
         break;
+
       case 'filter-new':
-        picturesArray = picturesArray.sort(function(pic1, pic2) {
+        filteredPictures = picturesArray.filter(function(pic1) {
+          return Math.abs(new Date() - new Date(pic1.date)) / monthInMilSec < 3;
+        });
+        filteredPictures = filteredPictures.sort(function(pic1, pic2) {
           return new Date(pic2.date) - new Date(pic1.date);
         });
         break;
     }
 
-    showPictures(picturesArray);
-
+    showPictures(filteredPictures);
   };
 
   var hideFilters = function() {
@@ -110,14 +117,15 @@ var templateNode = document.querySelector('#picture-template');
         var pictures = JSON.parse(xhr.responseText);
         picturesArray = pictures;
         showPictures(pictures);
+        showFilters();
       }
     };
     divPictures.classList.add('pictures-loading');
   };
 
   hideFilters();
-  var testpath = 'https://raw.githubusercontent.com/ashkuc/87533-keksogram/master/data/pictures.json';
+  var testpath = 'data/pictures.json';
   getPicturesRequest(testpath);
-  showFilters();
+
 
 })();
