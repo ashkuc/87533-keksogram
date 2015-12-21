@@ -54,6 +54,24 @@
   }
 
   window.addEventListener('resizerchange', function() {
+
+    //Ограничения на перетаскивание
+    if (currentResizer.getConstraint().x < 0) {
+      currentResizer.setConstraint(0);
+    }
+
+    if (currentResizer.getConstraint().x > currentResizer._image.naturalWidth - currentResizer.getConstraint().side) {
+      currentResizer.setConstraint(currentResizer._image.naturalWidth - currentResizer.getConstraint().side);
+    }
+
+    if (currentResizer.getConstraint().y < 0) {
+      currentResizer.setConstraint(currentResizer.getConstraint().x, 0);
+    }
+
+    if (currentResizer.getConstraint().y > currentResizer._image.naturalHeight - currentResizer.getConstraint().side) {
+      currentResizer.setConstraint(currentResizer.getConstraint().x, currentResizer._image.naturalHeight - currentResizer.getConstraint().side);
+    }
+
     resizeForm['resize-x'].value = parseInt(currentResizer.getConstraint().x, 10);
     resizeForm['resize-y'].value = parseInt(currentResizer.getConstraint().y, 10);
     resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);  
@@ -124,6 +142,50 @@
    * @type {HTMLFormElement}
    */
   var resizeForm = document.forms['upload-resize'];
+
+  resizeForm.addEventListener('change', function(evt) {
+    var element = evt.target;
+
+    if (element.name === 'x') {
+      if (+element.value <= 0) {
+        element.value = 0;
+        currentResizer.setConstraint(+element.value);
+      } else if (+element.value + currentResizer.getConstraint().side <= currentResizer._image.naturalWidth) {
+        currentResizer.setConstraint(+element.value);
+      } else {
+        element.value = currentResizer._image.naturalWidth - currentResizer.getConstraint().side;
+        currentResizer.setConstraint(+element.value);
+      }
+    }
+
+    if (element.name === 'y') {
+      if (+element.value <= 0) {
+        element.value = 0;
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +element.value);
+      } else if (+element.value + currentResizer.getConstraint().side <= currentResizer._image.naturalHeight) {
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +element.value);
+      } else {
+        element.value = currentResizer._image.naturalHeight - currentResizer.getConstraint().side;
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +element.value);
+      }
+    }
+
+    if (element.name === 'size') {
+      if (+element.value <= 0) {
+        element.value = 0;
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +resizeForm['resize-y'].value, +element.value);
+      } else if (+element.value <= Math.min(currentResizer._image.naturalWidth - resizeForm['resize-x'].value,
+                 currentResizer._image.naturalHeight - resizeForm['resize-y'].value)) {
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +resizeForm['resize-y'].value, +element.value);
+      } else {
+        element.value = Math.min(currentResizer._image.naturalWidth - resizeForm['resize-x'].value,
+                        currentResizer._image.naturalHeight - resizeForm['resize-y'].value);
+        currentResizer.setConstraint(+resizeForm['resize-x'].value, +resizeForm['resize-y'].value, +element.value);
+      }
+    }
+
+    currentResizer.redraw();
+  });
 
   /**
    * Форма добавления фильтра.
