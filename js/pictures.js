@@ -11,9 +11,17 @@ var templateNode = document.querySelector('#picture-template');
 
   var picturesArray = [];
 
+  var filteredPictures;
+
   var activefilter = 'filter-popular';
 
   var monthInMilSec = 1000 * 60 * 60 * 24 * 60;
+
+  var picturesPerPage = 12;
+
+  var scrollTimeout;
+
+  var currentPage = 0;
 
   for (var i = 0; i < filtersRadio.length; i++) {
     filtersRadio[i].onclick = function(event) {
@@ -22,12 +30,14 @@ var templateNode = document.querySelector('#picture-template');
     };
   }
 
-  var changeFilter = function(id) {
-    if (activefilter === id) {
+  var changeFilter = function(id, force) {
+    if (activefilter === id && !force) {
       return;
     }
+    divPictures.innerHTML = '';
+    currentPage = 0;
+    filteredPictures = picturesArray.slice(0);
     activefilter = id;
-    var filteredPictures;
     switch (id) {
       case 'filter-popular':
         filteredPictures = picturesArray.sort(function(pic1, pic2) {
@@ -51,14 +61,39 @@ var templateNode = document.querySelector('#picture-template');
         break;
     }
 
-    showPictures(filteredPictures);
+    showPictures(filteredPictures, 0);
   };
 
+  //Обработчики на собтия страницы
+  window.addEventListener('load', addPicturePage);
+
+  window.addEventListener('resize', addPicturePage);
+
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      addPicturePage();
+    }, 100);
+  });
+
+  function addPicturePage() {
+    var clientHeight = document.documentElement.offsetHeight;
+    var picturesRect = document.querySelector('.pictures').getBoundingClientRect();
+
+    if (picturesRect.height <= clientHeight + window.scrollY) {
+      if (currentPage < Math.ceil(filteredPictures.length / picturesPerPage)) {
+        showPictures(filteredPictures, ++currentPage);
+      }
+    }
+  }
+
+  //Спрятать фильтры
   var hideFilters = function() {
     divFilters.classList.remove('visible');
     divFilters.classList.add('hidden');
   };
 
+  //Показать фильтры
   var showFilters = function() {
     divFilters.classList.remove('hidden');
     divFilters.classList.add('visible');
@@ -86,10 +121,14 @@ var templateNode = document.querySelector('#picture-template');
     return newTemplate;
   };
 
-  var showPictures = function(pictures) {
-    divPictures.innerHTML = '';
+  var showPictures = function(pictures, pageNumber) {
 
     var dFragment = document.createDocumentFragment();
+
+    var arrBegin = pageNumber * picturesPerPage;
+    var arrEnd = arrBegin + picturesPerPage;
+
+    pictures = pictures.slice(arrBegin, arrEnd);
 
     pictures.forEach( function(item) {
       var pictureTemp = newPictureTemplate(item);
@@ -116,7 +155,8 @@ var templateNode = document.querySelector('#picture-template');
         divPictures.classList.remove('pictures-loading');
         var pictures = JSON.parse(xhr.responseText);
         picturesArray = pictures;
-        showPictures(pictures);
+        changeFilter('filter-popular', true);
+
         showFilters();
       }
     };
