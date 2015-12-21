@@ -35,6 +35,7 @@ var templateNode = document.querySelector('#picture-template');
       return;
     }
     divPictures.innerHTML = '';
+    currentPage = 0;
     filteredPictures = picturesArray.slice(0);
     activefilter = id;
     switch (id) {
@@ -84,7 +85,7 @@ var templateNode = document.querySelector('#picture-template');
         showPictures(filteredPictures, ++currentPage);
       }
     }
-  };
+  }
 
   //Спрятать фильтры
   var hideFilters = function() {
@@ -127,7 +128,7 @@ var templateNode = document.querySelector('#picture-template');
     var arrBegin = pageNumber * picturesPerPage;
     var arrEnd = arrBegin + picturesPerPage;
 
-    var pictures = pictures.slice(arrBegin, arrEnd);
+    pictures = pictures.slice(arrBegin, arrEnd);
 
     pictures.forEach( function(item) {
       var pictureTemp = newPictureTemplate(item);
