@@ -143,9 +143,10 @@
    */
   var resizeForm = document.forms['upload-resize'];
 
-  resizeForm.addEventListener('change', function(evt) {
-    var element = evt.target;
+  resizeForm.addEventListener('change', function(event) {
+    var element = event.target;
 
+    //Границы для X
     if (element.name === 'x') {
       if (+element.value <= 0) {
         element.value = 0;
@@ -158,6 +159,7 @@
       }
     }
 
+    //Границы для Y
     if (element.name === 'y') {
       if (+element.value <= 0) {
         element.value = 0;
@@ -170,6 +172,7 @@
       }
     }
 
+    //Границы для size
     if (element.name === 'size') {
       if (+element.value <= 0) {
         element.value = 0;
