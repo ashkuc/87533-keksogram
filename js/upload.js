@@ -42,6 +42,11 @@
    */
   var currentResizer;
 
+  window.addEventListener('resizerchange', function() {
+    resizeForm['resize-x'].value = parseInt(currentResizer.getConstraint().x, 10);
+    resizeForm['resize-y'].value = parseInt(currentResizer.getConstraint().y, 10);
+    resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);
+  });
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
