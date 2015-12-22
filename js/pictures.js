@@ -1,6 +1,6 @@
-'use strict';
+/*globals Photo*/
 
-var templateNode = document.querySelector('#picture-template');
+'use strict';
 
 (function() {
   var divPictures = document.querySelector('.pictures');
@@ -99,28 +99,6 @@ var templateNode = document.querySelector('#picture-template');
     divFilters.classList.add('visible');
   };
 
-  //Создание нового экземпляра по шаблону
-  var newPictureTemplate = function(item) {
-    var newTemplate = templateNode.content.children[0].cloneNode(true);
-    var image = new Image();
-
-    image.onload = function() {
-      image.height = image.width = 182;
-      newTemplate.replaceChild(image, newTemplate.querySelector('img'));
-    };
-
-    image.onerror = function() {
-      newTemplate.classList.add('picture-load-failure');
-    };
-
-    image.src = item.url;
-
-    newTemplate.querySelector('.picture-comments').textContent = item.comments;
-    newTemplate.querySelector('.picture-likes').textContent = item.likes;
-
-    return newTemplate;
-  };
-
   var showPictures = function(pictures, pageNumber) {
 
     var dFragment = document.createDocumentFragment();
@@ -131,7 +109,8 @@ var templateNode = document.querySelector('#picture-template');
     pictures = pictures.slice(arrBegin, arrEnd);
 
     pictures.forEach( function(item) {
-      var pictureTemp = newPictureTemplate(item);
+      var newPhoto = new Photo(item);
+      var pictureTemp = Photo.render();
       dFragment.appendChild(pictureTemp);
     });
 
