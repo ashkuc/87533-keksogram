@@ -110,7 +110,7 @@
 
     pictures.forEach( function(item) {
       var newPhoto = new Photo(item);
-      var pictureTemp = Photo.render();
+      var pictureTemp = newPhoto.render();
       dFragment.appendChild(pictureTemp);
     });
 

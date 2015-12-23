@@ -1,12 +1,9 @@
-var Photo = (function (data) {
+function Photo(data) {
+  this._data = data;
 
-var self = this;
+ };
 
-var photo = {};
-
-var _data = data;
-
-photo.render = function() {
+Photo.prototype.render = function() {
 	var templateNode = document.querySelector('#picture-template');
     var newTemplate = templateNode.content.children[0].cloneNode(true);
     var image = new Image();
@@ -20,13 +17,10 @@ photo.render = function() {
       newTemplate.classList.add('picture-load-failure');
     };
 
-    image.src = _data.url;
+    image.src = this._data.url;
 
-    newTemplate.querySelector('.picture-comments').textContent = _data.comments;
-    newTemplate.querySelector('.picture-likes').textContent = _data.likes;
+    newTemplate.querySelector('.picture-comments').textContent = this._data.comments;
+    newTemplate.querySelector('.picture-likes').textContent = this._data.likes;
 
     return newTemplate;
-  };
-
-  return photo;
-})();
+ }
