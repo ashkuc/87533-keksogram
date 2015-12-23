@@ -53,30 +53,32 @@
     }
   }
 
-  window.addEventListener('resizerchange', function() {
+  window.addEventListener('resizerchange', resizerChangeHandler);
 
+  function resizerChangeHandler() {
     //Ограничения на перетаскивание
-    if (currentResizer.getConstraint().x < 0) {
-      currentResizer.setConstraint(0);
+    if (currentResizer) {
+      if (currentResizer.getConstraint().x < 0) {
+        currentResizer.setConstraint(0);
+      }
+
+      if (currentResizer.getConstraint().x > currentResizer._image.naturalWidth - currentResizer.getConstraint().side) {
+        currentResizer.setConstraint(currentResizer._image.naturalWidth - currentResizer.getConstraint().side);
+      }
+
+      if (currentResizer.getConstraint().y < 0) {
+        currentResizer.setConstraint(currentResizer.getConstraint().x, 0);
+      }
+
+      if (currentResizer.getConstraint().y > currentResizer._image.naturalHeight - currentResizer.getConstraint().side) {
+        currentResizer.setConstraint(currentResizer.getConstraint().x, currentResizer._image.naturalHeight - currentResizer.getConstraint().side);
+      }
+
+      resizeForm['resize-x'].value = parseInt(currentResizer.getConstraint().x, 10);
+      resizeForm['resize-y'].value = parseInt(currentResizer.getConstraint().y, 10);
+      resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);  
     }
-
-    if (currentResizer.getConstraint().x > currentResizer._image.naturalWidth - currentResizer.getConstraint().side) {
-      currentResizer.setConstraint(currentResizer._image.naturalWidth - currentResizer.getConstraint().side);
-    }
-
-    if (currentResizer.getConstraint().y < 0) {
-      currentResizer.setConstraint(currentResizer.getConstraint().x, 0);
-    }
-
-    if (currentResizer.getConstraint().y > currentResizer._image.naturalHeight - currentResizer.getConstraint().side) {
-      currentResizer.setConstraint(currentResizer.getConstraint().x, currentResizer._image.naturalHeight - currentResizer.getConstraint().side);
-    }
-
-    resizeForm['resize-x'].value = parseInt(currentResizer.getConstraint().x, 10);
-    resizeForm['resize-y'].value = parseInt(currentResizer.getConstraint().y, 10);
-    resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);
-  });
-
+  }
 
   /**
    * Ставит одну из трех случайных картинок на фон формы загрузки.
@@ -144,7 +146,13 @@
   var resizeForm = document.forms['upload-resize'];
 
   resizeForm.addEventListener('change', function(event) {
-    var element = event.target;
+    resizeFormChangeHandler(event.target);
+
+    currentResizer.redraw();
+  });
+
+  function resizeFormChangeHandler(target) {
+    var element = target;
 
     //Границы для X
     if (element.name === 'x') {
@@ -186,9 +194,7 @@
         currentResizer.setConstraint(+resizeForm['resize-x'].value, +resizeForm['resize-y'].value, +element.value);
       }
     }
-
-    currentResizer.redraw();
-  });
+  }
 
   /**
    * Форма добавления фильтра.
@@ -270,7 +276,8 @@
 
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
-
+          };
+          
           hideMessage();
         };
 
@@ -281,7 +288,6 @@
         showMessage(Action.ERROR);
       }
     }
-  };
 
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
