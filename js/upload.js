@@ -279,9 +279,9 @@
         };
 
         hideMessage();
-        };
+      }
 
-        fileReader.readAsDataURL(element.files[0]);
+      fileReader.readAsDataURL(element.files[0]);
     } else {
       // Показ сообщения об ошибке, если загружаемый файл, не является
       // поддерживаемым изображением.
