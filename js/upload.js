@@ -76,7 +76,7 @@
 
       resizeForm['resize-x'].value = parseInt(currentResizer.getConstraint().x, 10);
       resizeForm['resize-y'].value = parseInt(currentResizer.getConstraint().y, 10);
-      resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);  
+      resizeForm['resize-size'].value = parseInt(currentResizer.getConstraint().side, 10);
     }
   }
 
@@ -276,18 +276,18 @@
 
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
-          };
-          
-          hideMessage();
+        };
+
+        hideMessage();
         };
 
         fileReader.readAsDataURL(element.files[0]);
-      } else {
-        // Показ сообщения об ошибке, если загружаемый файл, не является
-        // поддерживаемым изображением.
-        showMessage(Action.ERROR);
-      }
+    } else {
+      // Показ сообщения об ошибке, если загружаемый файл, не является
+      // поддерживаемым изображением.
+      showMessage(Action.ERROR);
     }
+  };
 
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
