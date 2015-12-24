@@ -1,10 +1,11 @@
+"use strict";
+
 function Photo(data) {
   this._data = data;
-
 }
 
 Photo.prototype.render = function() {
-	var templateNode = document.querySelector('#picture-template');
+  var templateNode = document.querySelector('#picture-template');
   var newTemplate = templateNode.content.children[0].cloneNode(true);
   var image = new Image();
 
