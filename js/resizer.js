@@ -39,7 +39,8 @@
           this._container.width / 2 - side / 2,
           this._container.height / 2 - side / 2,
           side);
-      window.dispatchEvent(new CustomEvent('resizerchange'));
+
+      window.dispatchEvent(new Event('resizerchange'));
       // Отрисовка изначального состояния канваса.
       this.redraw();
     }.bind(this);
