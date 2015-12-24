@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function Photo(data) {
   this._data = data;
