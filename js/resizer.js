@@ -40,6 +40,8 @@
           this._container.height / 2 - side / 2,
           side);
 
+      //вызовем событие resizerchange, чтобы сработал обработчик из update.js
+      window.dispatchEvent(new CustomEvent('resizerchange'));
       // Отрисовка изначального состояния канваса.
       this.redraw();
     }.bind(this);
