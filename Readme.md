@@ -2,7 +2,6 @@
 
 
 [![Build status][travis-image]][travis-url]
-[![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Арсений Медоев](https://htmlacademy.ru/profile/id87533).
 * Наставник: `Кирилл Емельянов`.
@@ -25,7 +24,5 @@
 
 Репозиторий создан для обучения на интенсивном онлайн-курсе «[Базовый JavaScript](https://htmlacademy.ru/js_intensive)» от [HTML Academy](https://htmlacademy.ru).
 
-[travis-image]: https://travis-ci.org/js-htmlacademy/87533-keksogram.svg?branch=master
-[travis-url]: https://travis-ci.org/js-htmlacademy/87533-keksogram
-[dependency-image]: https://david-dm.org/js-htmlacademy/87533-keksogram.svg?style=flat-square
-[dependency-url]: https://david-dm.org/js-htmlacademy/87533-keksogram
+[travis-image]: https://travis-ci.org/ashkuc/87533-keksogram.svg?branch=master
+[travis-url]: https://travis-ci.org/ashkuc/87533-keksogram
